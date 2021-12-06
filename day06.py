@@ -24,7 +24,7 @@ def next_day(timer_counts: list[int]) -> list[int]:
     return updated_timer_counts
 
 
-def fast_forward(timer_counts: list[int], days: int):
+def fast_forward(timer_counts: list[int], days: int) -> list[int]:
     for _ in range(days):
         timer_counts = next_day(timer_counts)
 
@@ -48,7 +48,7 @@ def main():
     print("Answer:", answer)
 
 
-def parse_input() -> list[int]:
+def parse_input() -> list[str]:
     input_file = open("day06_input.txt", "r")
     input_timers = input_file.read().strip().split(",")
     input_file.close()
