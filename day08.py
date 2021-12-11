@@ -12,7 +12,6 @@ PLAIN_TEXT_ENCODINGS = {
     "ABCDEFG":  8,
     "ABCDFG":   9
 }
-
 CIPHER_TEXT_LETTERS = ["a", "b", "c", "d", "e", "f", "g"]
 PLAIN_TEXT_LETTERS = ["A", "B", "C", "D", "E", "F", "G"]
 NUMBER_OF_TEST_DIGITS = 4
