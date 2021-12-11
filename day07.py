@@ -2,9 +2,6 @@ import math
 from typing import List
 
 
-TEST_DATA = [16, 1, 2, 0, 4, 2, 7, 1, 2, 14]
-
-
 def mean(values: List[int]) -> float:
     number_of_values = len(values)
     return sum(values) / number_of_values
