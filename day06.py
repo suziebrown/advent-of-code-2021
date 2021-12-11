@@ -1,8 +1,12 @@
+from typing import List
+
+
 RESET_VALUE = 6
 INITIAL_VALUE = 8
 DISTINCT_VALUES = INITIAL_VALUE + 1
 
-def initial_timer_counts(input_timers: list[str]) -> list[int]:
+
+def initial_timer_counts(input_timers: List[str]) -> List[int]:
     timer_counts = [None] * DISTINCT_VALUES
     timers = list(map(int, input_timers))
     
@@ -12,7 +16,7 @@ def initial_timer_counts(input_timers: list[str]) -> list[int]:
     return timer_counts
 
 
-def next_day(timer_counts: list[int]) -> list[int]:
+def next_day(timer_counts: List[int]) -> List[int]:
     updated_timer_counts = [0] * len(timer_counts)
 
     for value in range(1, DISTINCT_VALUES):
@@ -24,7 +28,7 @@ def next_day(timer_counts: list[int]) -> list[int]:
     return updated_timer_counts
 
 
-def fast_forward(timer_counts: list[int], days: int) -> list[int]:
+def fast_forward(timer_counts: List[int], days: int) -> List[int]:
     for _ in range(days):
         timer_counts = next_day(timer_counts)
 
@@ -48,7 +52,7 @@ def main():
     print("Answer:", answer)
 
 
-def parse_input() -> list[str]:
+def parse_input() -> List[str]:
     input_file = open("day06_input.txt", "r")
     input_timers = input_file.read().strip().split(",")
     input_file.close()

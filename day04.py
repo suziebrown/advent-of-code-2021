@@ -1,8 +1,15 @@
+# I remembered after finishing day 4 that you can define classes & methods
+# that would have made this a lot more readable...
+
+from typing import List
+
+
 NUMBER_OF_BOARDS = 100
 ROWS_PER_BOARD = 5
 COLUMNS_PER_BOARD = 5
 
-def parse_input() -> list[str]:
+
+def parse_input() -> List[str]:
     
     input_file = open("day04_input.txt", "r")
     raw_input = input_file.read().split("\n\n")
@@ -16,17 +23,17 @@ def parse_input() -> list[str]:
     return (numbers_drawn, boards)
 
 
-def split_rows(raw_board: str) -> list[str]:
+def split_rows(raw_board: str) -> List[str]:
     board_rows = raw_board.strip().split("\n")
     return board_rows
 
 
-def split_columns(board_rows: list[str]) -> list[list[str]]:
+def split_columns(board_rows: List[str]) -> List[List[str]]:
     board = [row.split() for row in board_rows]
     return board
 
 
-def get_winner_score(numbers_drawn: list[str], boards: list[list[list[str]]]):
+def get_winner_score(numbers_drawn: List[str], boards: List[List[List[str]]]):
     for number in numbers_drawn:
         mark_boards(number, boards)
         
@@ -39,7 +46,7 @@ def get_winner_score(numbers_drawn: list[str], boards: list[list[list[str]]]):
     raise Exception("All numbers were drawn but no winner was found")
 
 
-def get_loser_score(numbers_drawn: list[str], boards: list[list[list[str]]]):
+def get_loser_score(numbers_drawn: List[str], boards: List[List[List[str]]]):
     boards_bingo_status = [0] * NUMBER_OF_BOARDS
     loser_index = None
     
@@ -64,7 +71,7 @@ def get_loser_score(numbers_drawn: list[str], boards: list[list[list[str]]]):
     raise Exception("All numbers were drawn but no loser was found")
 
 
-def mark_boards(number: str, boards: list[list[list[str]]]):
+def mark_boards(number: str, boards: List[List[List[str]]]):
     for board in boards:
         for row in range(ROWS_PER_BOARD):
             for column in range(COLUMNS_PER_BOARD):
@@ -72,7 +79,7 @@ def mark_boards(number: str, boards: list[list[list[str]]]):
                     board[row][column] = None
 
 
-def update_boards_bingo_status(boards: list[list[list[str]]], boards_bingo_status: list[int]):
+def update_boards_bingo_status(boards: List[List[List[str]]], boards_bingo_status: list[int]):
     for board_index in range(NUMBER_OF_BOARDS):
         if boards_bingo_status[board_index] == 0 and has_bingo(boards[board_index]):
             boards_bingo_status[board_index] = 1
@@ -86,7 +93,7 @@ def get_winner_or_none(boards: list[list[list[str]]]) -> int:
     return None
 
 
-def get_loser_or_none(boards_bingo_status: list[int]) -> int:
+def get_loser_or_none(boards_bingo_status: List[int]) -> int:
     number_of_bingos = sum(boards_bingo_status)
     
     if number_of_bingos == NUMBER_OF_BOARDS - 1:
@@ -96,7 +103,7 @@ def get_loser_or_none(boards_bingo_status: list[int]) -> int:
     return None
 
 
-def has_bingo(board: list[list[str]]) -> bool:
+def has_bingo(board: List[List[str]]) -> bool:
     for row in board:
         if count_marked(row) == COLUMNS_PER_BOARD:
             return True
@@ -108,23 +115,23 @@ def has_bingo(board: list[list[str]]) -> bool:
     return False
 
 
-def is_game_over(boards_bingo_status: list[int]) -> bool:
+def is_game_over(boards_bingo_status: List[int]) -> bool:
     number_of_bingos = sum(boards_bingo_status)
     return number_of_bingos == NUMBER_OF_BOARDS
 
 
-def get_score(winning_board: list[list[str]], last_number_drawn: str) -> int:
+def get_score(winning_board: List[List[str]], last_number_drawn: str) -> int:
     winning_board_int = [[int(number) for number in row if number is not None] for row in winning_board]
     row_sums = [sum(row) for row in winning_board_int]
     score = sum(row_sums) * int(last_number_drawn)
     return score
 
 
-def count_marked(row_or_column: list[str]) -> int:
+def count_marked(row_or_column: List[str]) -> int:
     return sum(x is None for x in row_or_column)
 
 
-def transpose(board: list[list[str]]) -> list[list[str]]:
+def transpose(board: List[List[str]]) -> List[List[str]]:
     transposed_board = [[row[column_index] for row in board] for column_index in range(COLUMNS_PER_BOARD)]
     return transposed_board
 

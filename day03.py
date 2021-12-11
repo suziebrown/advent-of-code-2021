@@ -1,6 +1,10 @@
+from typing import List
+
+
 LENGTH_OF_BINARY_NUMBERS = 12
 
-def parse_input() -> list[str]:
+
+def parse_input() -> List[str]:
     inputs = list()
     input_file = open("day03_input.txt", "r")
 
@@ -10,7 +14,7 @@ def parse_input() -> list[str]:
     return inputs
 
 
-def get_gamma_and_epsilon(gamma_bits: list[str]) -> tuple[int, int]:
+def get_gamma_and_epsilon(gamma_bits: List[str]) -> tuple[int, int]:
     epsilon_bits = [invert(bit) for bit in gamma_bits]
 
     gamma = bits_to_decimal(gamma_bits)
@@ -19,7 +23,7 @@ def get_gamma_and_epsilon(gamma_bits: list[str]) -> tuple[int, int]:
     return (gamma, epsilon)
 
 
-def get_gamma_bits(inputs: list[str]) -> list[str]:
+def get_gamma_bits(inputs: List[str]) -> List[str]:
     gamma_bits = list[str]()
     
     for position in range(LENGTH_OF_BINARY_NUMBERS):
@@ -30,7 +34,7 @@ def get_gamma_bits(inputs: list[str]) -> list[str]:
     return gamma_bits
 
 
-def get_oxygen_rating(inputs: list[str]) -> str:
+def get_oxygen_rating(inputs: List[str]) -> str:
     filtered_inputs = inputs
 
     for position in range(LENGTH_OF_BINARY_NUMBERS):
@@ -45,7 +49,7 @@ def get_oxygen_rating(inputs: list[str]) -> str:
     return "Error"
 
     
-def get_co2_rating(inputs: list[str]) -> list[str]:
+def get_co2_rating(inputs: List[str]) -> List[str]:
     filtered_inputs = inputs
 
     for position in range(LENGTH_OF_BINARY_NUMBERS):
@@ -60,7 +64,7 @@ def get_co2_rating(inputs: list[str]) -> list[str]:
     return "Error"
     
 
-def get_most_common_bit(inputs: list[str]) -> str:
+def get_most_common_bit(inputs: List[str]) -> str:
     number_of_zeros = inputs.count("0")
     number_of_ones = inputs.count("1")
     if number_of_zeros + number_of_ones != len(inputs):
@@ -75,7 +79,7 @@ def get_most_common_bit(inputs: list[str]) -> str:
         return most_common_bit
 
 
-def get_most_common_bit_or_default(inputs: list[str]) -> str:
+def get_most_common_bit_or_default(inputs: List[str]) -> str:
     # defaults to "1" if 0 and 1 are equally common
     number_of_zeros = inputs.count("0")
     number_of_ones = inputs.count("1")
@@ -89,7 +93,7 @@ def get_most_common_bit_or_default(inputs: list[str]) -> str:
         return most_common_bit
 
 
-def get_least_common_bit_or_default(inputs: list[str]) -> str:
+def get_least_common_bit_or_default(inputs: List[str]) -> str:
     # defaults to "0" if 0 and 1 are equally common
     most_common_bit = get_most_common_bit_or_default(inputs)
     least_common_bit = "0" if most_common_bit == "1" else "1"
@@ -104,7 +108,8 @@ def invert(bit: str) -> str:
     else:
         return "1" if bit == "0" else "0"
 
-def bits_to_decimal(bits: list[str]) -> int:
+
+def bits_to_decimal(bits: List[str]) -> int:
     binary = "".join(bits)
     decimal = int(binary, 2)
     

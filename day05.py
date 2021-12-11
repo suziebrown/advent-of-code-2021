@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Point:
     def __init__(self, x: str, y: str):
         self.x = x
@@ -12,7 +15,7 @@ class Line:
         self.start = start
         self.end = end
 
-    def get_all_points(self) -> list[Point]:
+    def get_all_points(self) -> List[Point]:
         if self.is_horizontal():
             return self.get_all_points_horizontal()
         if self.is_vertical():
@@ -25,19 +28,19 @@ class Line:
     def is_horizontal(self) -> bool:
         return self.start.y == self.end.y
 
-    def get_all_points_horizontal(self) -> list[Point]:
+    def get_all_points_horizontal(self) -> List[Point]:
         points = list[Point]()
         for x in range(self.x_min(), self.x_max() + 1):
             points.append(Point(x = str(x), y = self.start.y))
         return points
 
-    def get_all_points_vertical(self) -> list[Point]:
+    def get_all_points_vertical(self) -> List[Point]:
         points = list[Point]()
         for y in range(self.y_min(), self.y_max() + 1):
             points.append(Point(x = self.start.x, y = str(y)))
         return points
 
-    def get_all_points_diagonal(self) -> list[Point]:
+    def get_all_points_diagonal(self) -> List[Point]:
         points = list[Point]()
         is_diagonal_up = self.is_diagonal_up()
         y = self.y_min() if is_diagonal_up else self.y_max()
@@ -92,7 +95,7 @@ def main():
     print("Answer:", answer)
 
 
-def parse_input() -> list[Line]:
+def parse_input() -> List[Line]:
     input_file = open("day05_input.txt", "r")
     input_lines = input_file.read().strip().split("\n")
     input_file.close()
@@ -111,7 +114,7 @@ def parse_input() -> list[Line]:
     return lines
 
 
-def get_points_with_multiple_vents(lines: list[Line]) -> list[Point]:
+def get_points_with_multiple_vents(lines: List[Line]) -> List[Point]:
     points_with_multiple_vents = list[Point]()
     vent_counts = dict[str, int]()
 
@@ -124,7 +127,7 @@ def get_points_with_multiple_vents(lines: list[Line]) -> list[Point]:
     return points_with_multiple_vents
 
 
-def update_vent_counts(points: list[Point], vent_counts: dict[str, int]):
+def update_vent_counts(points: List[Point], vent_counts: dict[str, int]):
     for point in points:
         key = point.to_string()
         previous_count = vent_counts[key] if key in vent_counts.keys() else 0

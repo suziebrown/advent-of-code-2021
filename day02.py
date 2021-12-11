@@ -1,5 +1,8 @@
-def parse_input() -> list[str]:
-    instructions = list()
+from typing import List
+
+
+def parse_input() -> List[str]:
+    instructions = []
     input_file = open("day02_input.txt", "r")
 
     for line in input_file:
@@ -8,7 +11,7 @@ def parse_input() -> list[str]:
     return instructions
 
 
-def calculate_position(instructions: list[str]) -> tuple[int, int]:
+def calculate_position(instructions: List[str]) -> tuple[int, int]:
     horizontal = 0
     depth = 0
     for instruction in instructions:
@@ -23,7 +26,7 @@ def calculate_position(instructions: list[str]) -> tuple[int, int]:
     return (horizontal, depth)
 
 
-def calculate_position_2(instructions: list[str]) -> tuple[int, int, int]:
+def calculate_position_2(instructions: List[str]) -> tuple[int, int, int]:
     horizontal = 0
     depth = 0
     aim = 0
@@ -45,12 +48,14 @@ def main():
     instructions = parse_input()
     print("the number of instructions is " + str(len(instructions)))
 
-    ## Part 1 only
-    # (horizontal, depth) = calculate_position(instructions)
-    # print("the final position is: horizontal=" + str(horizontal) + " depth=" + str(depth))
-    # print("multiplied together this gives " + str(position[0] * position[1]))
+    ## Part 1
+    print("=== Part 1 ===")
+    (horizontal, depth) = calculate_position(instructions)
+    print("the final position is: horizontal=" + str(horizontal) + " depth=" + str(depth))
+    print("multiplied together this gives " + str(position[0] * position[1]))
 
-    ## Part 2 only
+    ## Part 2
+    print("=== Part 2 ===")
     (horizontal, depth, aim) = calculate_position_2(instructions)
     print("the final position is: horizontal=" + str(horizontal) + " depth=" + str(depth) + " aim=" + str(aim))
     print("multiplied together this gives " + str(horizontal * depth))

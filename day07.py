@@ -1,6 +1,7 @@
 import math
 from typing import List
 
+
 TEST_DATA = [16, 1, 2, 0, 4, 2, 7, 1, 2, 14]
 
 
