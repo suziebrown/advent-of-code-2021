@@ -1,6 +1,7 @@
 import sys
 import threading
 from typing import List
+import utils
 
 
 class Cave:
@@ -26,7 +27,6 @@ def get_paths(start: Cave, end: Cave, caves: dict[str, Cave]) -> int:
 
 def get_paths_recursion(start: Cave, end: Cave, small_caves_visited: List[str], caves: dict[str, Cave]):
     global count
-    print("Small caves visited so far:", small_caves_visited)
     if start.is_small:
         small_caves_visited.append(start.name)
         
@@ -35,23 +35,41 @@ def get_paths_recursion(start: Cave, end: Cave, small_caves_visited: List[str], 
         if neighbour.name in small_caves_visited:
                 continue
 
-        print("Arrived at node", name) 
         if name == end.name:
             count += 1
-            print("Count is now", count)
         else:
             get_paths_recursion(neighbour, end, small_caves_visited[::], caves)
+
+
+def get_paths_2(start: Cave, end: Cave, caves: dict[str, Cave]) -> int:
+    global count
+    count = 0
+    get_paths_recursion_2(start, end, [], caves)
+    return count
+
+
+def get_paths_recursion_2(start: Cave, end: Cave, small_caves_visited: List[str], caves: dict[str, Cave]):
+    global count
+    if start.is_small:
+        small_caves_visited.append(start.name)
+        
+    for name in start.neighbours_names:
+        neighbour = caves[name]
+        if neighbour.name in small_caves_visited:
+            has_revisited = not len(utils.unique(small_caves_visited)) == len(small_caves_visited)
+            is_invalid_step = has_revisited or neighbour.name == "start" or neighbour.name == "end"
+            if is_invalid_step:
+                continue
+
+        if name == end.name:
+            count += 1
+        else:
+            get_paths_recursion_2(neighbour, end, small_caves_visited[::], caves)
                 
             
 def main():
     input_lines = parse_input()
     caves = get_caves(input_lines)
-    
-    # Test
-##    for cave in caves.values():
-##        print(cave.name, "has neigbours", cave.neighbours_names)
-##    npaths = get_paths(caves["start"], caves["mj"], caves)
-##    print("Total paths found:", npaths)
     
     # Part 1
     print("=== Part 1 ===")
@@ -60,7 +78,7 @@ def main():
 
     # Part 2
     print("=== Part 2 ===")
-    answer = "?"
+    answer = get_paths_2(caves["start"], caves["end"], caves)
     print("Answer:", answer)
 
 
@@ -79,7 +97,7 @@ def parse_input() -> List[List[str]]:
 
 def get_caves(pairs: List[List[str]]) -> dict[str, Cave]:
     caves = dict[str, Cave]()
-    all_cave_names = unique(flatten(pairs))
+    all_cave_names = utils.unique(utils.flatten(pairs))
     
     for name in all_cave_names:
         new_cave = Cave(name)
@@ -101,14 +119,6 @@ def get_neighbours_names(name_here: str, pairs: List[List[str]]) -> List[str]:
             neighbours.append(pair[0])
 
     return neighbours
-
-
-def flatten(list_of_lists: List[List]) -> List:
-    return [item for sublist in list_of_lists for item in sublist]
-
-
-def unique(l: List) -> List:
-    return list(set(l))
 
 
 if __name__ == "__main__":
