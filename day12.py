@@ -1,6 +1,6 @@
 import sys
 import threading
-from typing import List
+from typing import List, Dict
 import utils
 
 
@@ -18,14 +18,14 @@ class Cave:
             self.neighbours_names.append(name)
 
 
-def get_paths(start: Cave, end: Cave, caves: dict[str, Cave]) -> int:
+def get_paths(start: Cave, end: Cave, caves: Dict[str, Cave]) -> int:
     global count
     count = 0
     get_paths_recursion(start, end, [], caves)
     return count
 
 
-def get_paths_recursion(start: Cave, end: Cave, small_caves_visited: List[str], caves: dict[str, Cave]):
+def get_paths_recursion(start: Cave, end: Cave, small_caves_visited: List[str], caves: Dict[str, Cave]):
     global count
     if start.is_small:
         small_caves_visited.append(start.name)
@@ -41,14 +41,14 @@ def get_paths_recursion(start: Cave, end: Cave, small_caves_visited: List[str], 
             get_paths_recursion(neighbour, end, small_caves_visited[::], caves)
 
 
-def get_paths_2(start: Cave, end: Cave, caves: dict[str, Cave]) -> int:
+def get_paths_2(start: Cave, end: Cave, caves: Dict[str, Cave]) -> int:
     global count
     count = 0
     get_paths_recursion_2(start, end, [], caves)
     return count
 
 
-def get_paths_recursion_2(start: Cave, end: Cave, small_caves_visited: List[str], caves: dict[str, Cave]):
+def get_paths_recursion_2(start: Cave, end: Cave, small_caves_visited: List[str], caves: Dict[str, Cave]):
     global count
     if start.is_small:
         small_caves_visited.append(start.name)
@@ -95,8 +95,8 @@ def parse_input() -> List[List[str]]:
     return pairs
 
 
-def get_caves(pairs: List[List[str]]) -> dict[str, Cave]:
-    caves = dict[str, Cave]()
+def get_caves(pairs: List[List[str]]) -> Dict[str, Cave]:
+    caves = Dict[str, Cave]()
     all_cave_names = utils.unique(utils.flatten(pairs))
     
     for name in all_cave_names:

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import math
 
 
@@ -30,7 +30,7 @@ class Sequence:
             assert(is_closer(self.first_error_character))
             return SCORE_1_LOOKUP[self.first_error_character]
 
-    def get_score_2(self) -> int:
+    def get_score_2(self) -> Optional[int]:
         if self.first_error_position is not None:
             return None
         else:

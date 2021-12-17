@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 
 LENGTH_OF_BINARY_NUMBERS = 12
@@ -11,20 +11,21 @@ def parse_input() -> List[str]:
     for line in input_file:
         inputs.append(line)
 
+    input_file.close()
     return inputs
 
 
-def get_gamma_and_epsilon(gamma_bits: List[str]) -> tuple[int, int]:
+def get_gamma_and_epsilon(gamma_bits: List[str]) -> Tuple[int, int]:
     epsilon_bits = [invert(bit) for bit in gamma_bits]
 
     gamma = bits_to_decimal(gamma_bits)
     epsilon = bits_to_decimal(epsilon_bits)
 
-    return (gamma, epsilon)
+    return gamma, epsilon
 
 
 def get_gamma_bits(inputs: List[str]) -> List[str]:
-    gamma_bits = list[str]()
+    gamma_bits = []
     
     for position in range(LENGTH_OF_BINARY_NUMBERS):
         bits_at_position = [binary_number[position] for binary_number in inputs]
@@ -45,8 +46,7 @@ def get_oxygen_rating(inputs: List[str]) -> str:
         if len(filtered_inputs) == 1:
             return filtered_inputs[0]
 
-    print("ERROR in get_oxygen_rating: didn't end up with exactly one entry")
-    return "Error"
+    raise Exception("Didn't end up with exactly one entry")
 
     
 def get_co2_rating(inputs: List[str]) -> List[str]:
@@ -60,19 +60,16 @@ def get_co2_rating(inputs: List[str]) -> List[str]:
         if len(filtered_inputs) == 1:
             return filtered_inputs[0]
 
-    print("ERROR in get_co2_rating: didn't end up with exactly one entry")
-    return "Error"
-    
+    raise Exception("Didn't end up with exactly one entry")
+
 
 def get_most_common_bit(inputs: List[str]) -> str:
     number_of_zeros = inputs.count("0")
     number_of_ones = inputs.count("1")
     if number_of_zeros + number_of_ones != len(inputs):
-        print("ERROR in get_most_common_bit: there may be inputs other than 0/1")
-        return "Error"
+        raise Exception("There may be inputs other than 0/1")
     elif number_of_zeros == number_of_ones:
-        print("ERROR in get_most_common_bit: 0 and 1 are equally common")
-        return "Error"
+        raise Exception("0 and 1 are equally common")
     else:
         is_zero_most_common = number_of_zeros > len(inputs) / 2
         most_common_bit = "0" if is_zero_most_common else "1"
@@ -85,8 +82,7 @@ def get_most_common_bit_or_default(inputs: List[str]) -> str:
     number_of_ones = inputs.count("1")
     
     if number_of_zeros + number_of_ones != len(inputs):
-        print("ERROR in get_most_common_bit_or_default: there may be inputs other than 0/1")
-        return "Error"
+        raise Exception("There may be inputs other than 0/1")
     else:
         is_zero_most_common = number_of_zeros > len(inputs) / 2
         most_common_bit = "0" if is_zero_most_common else "1"
@@ -120,7 +116,7 @@ def main():
     inputs = parse_input()
     print("the number of inputs is", str(len(inputs)))
 
-    ## Part 1
+    # Part 1
     print("=== Part 1 ===")
     gamma_bits = get_gamma_bits(inputs)
     (gamma, epsilon) = get_gamma_and_epsilon(gamma_bits)
@@ -128,7 +124,7 @@ def main():
     print("epsilon:", epsilon)
     print("Answer:", int(gamma) * int(epsilon))
     
-    ## Part 2
+    # Part 2
     print("=== Part 2 ===")
     oxygen_binary = get_oxygen_rating(inputs)
     oxygen = int(oxygen_binary, 2)

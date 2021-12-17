@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 
 def parse_input() -> List[str]:
@@ -8,10 +8,11 @@ def parse_input() -> List[str]:
     for line in input_file:
         instructions.append(line)
 
+    input_file.close()
     return instructions
 
 
-def calculate_position(instructions: List[str]) -> tuple[int, int]:
+def calculate_position(instructions: List[str]) -> Tuple[int, int]:
     horizontal = 0
     depth = 0
     for instruction in instructions:
@@ -23,10 +24,10 @@ def calculate_position(instructions: List[str]) -> tuple[int, int]:
             depth = depth + int(instruction[5])
         else:
             print("Unexpected instruction type")
-    return (horizontal, depth)
+    return horizontal, depth
 
 
-def calculate_position_2(instructions: List[str]) -> tuple[int, int, int]:
+def calculate_position_2(instructions: List[str]) -> Tuple[int, int, int]:
     horizontal = 0
     depth = 0
     aim = 0
@@ -41,24 +42,24 @@ def calculate_position_2(instructions: List[str]) -> tuple[int, int, int]:
             aim = aim + int(instruction[5])
         else:
             print("Unexpected instruction type")
-    return (horizontal, depth, aim)
+    return horizontal, depth, aim
 
 
 def main():
     instructions = parse_input()
     print("the number of instructions is " + str(len(instructions)))
 
-    ## Part 1
+    # Part 1
     print("=== Part 1 ===")
     (horizontal, depth) = calculate_position(instructions)
     print("the final position is: horizontal=" + str(horizontal) + " depth=" + str(depth))
-    print("multiplied together this gives " + str(position[0] * position[1]))
+    print("Answer:", str(horizontal * depth))
 
-    ## Part 2
+    # Part 2
     print("=== Part 2 ===")
     (horizontal, depth, aim) = calculate_position_2(instructions)
     print("the final position is: horizontal=" + str(horizontal) + " depth=" + str(depth) + " aim=" + str(aim))
-    print("multiplied together this gives " + str(horizontal * depth))
+    print("Answer:", str(horizontal * depth))
 
 
 if __name__ == "__main__":

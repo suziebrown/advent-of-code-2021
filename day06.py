@@ -39,13 +39,13 @@ def main():
     timers = parse_input()
     counts = initial_timer_counts(timers)
     
-    ## Part 1
+    # Part 1
     print("=== Part 1 ===")
     counts_day_80 = fast_forward(counts, 80)
     answer = sum(counts_day_80)
     print("Answer:", answer)
 
-    ## Part 2
+    # Part 2
     print("=== Part 2 ===")
     counts_day_256 = fast_forward(counts, 256)
     answer = sum(counts_day_256)

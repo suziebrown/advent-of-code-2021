@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import utils
 
 
@@ -52,7 +52,7 @@ def main():
     print("Answer:", answer)
 
 
-def parse_input() -> tuple[str, Dict[str, Rule]]:
+def parse_input() -> Tuple[str, Dict[str, Rule]]:
     input_file = open("day14_input.txt", "r")
     input_parts = input_file.read().strip().split("\n\n")
     input_file.close()
@@ -60,16 +60,16 @@ def parse_input() -> tuple[str, Dict[str, Rule]]:
     template = input_parts[0]
     rules_raw = input_parts[1].split("\n")
     
-    rules = dict[str, Rule]()
+    rules = dict()
     for rule in rules_raw:
         rule_split = rule.strip().split(" -> ")
         rules.update({rule_split[0]: Rule(rule_split[0], rule_split[1])})
     
-    return (template, rules)
+    return template, rules
 
 
 def get_initial_element_counts(template: str) -> Dict[str, int]:
-    element_counts = dict[str, int]()
+    element_counts = dict()
     for element in template:
         if element in element_counts.keys():
             element_counts[element] += 1
@@ -80,7 +80,7 @@ def get_initial_element_counts(template: str) -> Dict[str, int]:
     
 
 def get_initial_pair_counts(template: str, rules: Dict[str, Rule]) -> Dict[str, int]:
-    pair_counts = dict[str, int]()
+    pair_counts = dict()
     unique_pairs = get_unique_pairs(rules)
     
     for pair in unique_pairs:

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 
 class Point:
@@ -29,23 +29,23 @@ class Line:
         return self.start.y == self.end.y
 
     def get_all_points_horizontal(self) -> List[Point]:
-        points = list[Point]()
+        points = []
         for x in range(self.x_min(), self.x_max() + 1):
-            points.append(Point(x = str(x), y = self.start.y))
+            points.append(Point(x=str(x), y=self.start.y))
         return points
 
     def get_all_points_vertical(self) -> List[Point]:
-        points = list[Point]()
+        points = []
         for y in range(self.y_min(), self.y_max() + 1):
-            points.append(Point(x = self.start.x, y = str(y)))
+            points.append(Point(x=self.start.x, y=str(y)))
         return points
 
     def get_all_points_diagonal(self) -> List[Point]:
-        points = list[Point]()
+        points = []
         is_diagonal_up = self.is_diagonal_up()
         y = self.y_min() if is_diagonal_up else self.y_max()
         for x in range(self.x_min(), self.x_max() + 1):
-            points.append(Point(x = str(x), y = str(y)))
+            points.append(Point(x=str(x), y=str(y)))
             y = y + 1 if is_diagonal_up else y - 1
         return points
 
@@ -82,14 +82,13 @@ class Line:
 def main():
     lines = parse_input()
     
-    ## Part 1
+    # Part 1
     print("=== Part 1 ===")
     hv_lines = [line for line in lines if line.is_horizontal() or line.is_vertical()]
     answer = len(get_points_with_multiple_vents(hv_lines))
-    
     print("Answer:", answer)
 
-    ## Part 2
+    # Part 2
     print("=== Part 2 ===")
     answer = len(get_points_with_multiple_vents(lines))
     print("Answer:", answer)
@@ -100,23 +99,22 @@ def parse_input() -> List[Line]:
     input_lines = input_file.read().strip().split("\n")
     input_file.close()
 
-    lines = list[Line]()
+    lines = []
     for input_line in input_lines:
         start_end = input_line.split(" -> ")
         start = start_end[0].split(",")
         end = start_end[1].split(",")
         
-        start_point = Point(x = start[0], y = start[1])
-        end_point = Point(x = end[0], y = end[1])
-        line = Line(start = start_point, end = end_point)
+        start_point = Point(x=start[0], y=start[1])
+        end_point = Point(x=end[0], y=end[1])
+        line = Line(start=start_point, end=end_point)
         lines.append(line)
         
     return lines
 
 
 def get_points_with_multiple_vents(lines: List[Line]) -> List[Point]:
-    points_with_multiple_vents = list[Point]()
-    vent_counts = dict[str, int]()
+    vent_counts = dict()
 
     for line in lines:
         points_in_line = line.get_all_points()
@@ -127,7 +125,7 @@ def get_points_with_multiple_vents(lines: List[Line]) -> List[Point]:
     return points_with_multiple_vents
 
 
-def update_vent_counts(points: List[Point], vent_counts: dict[str, int]):
+def update_vent_counts(points: List[Point], vent_counts: Dict[str, int]):
     for point in points:
         key = point.to_string()
         previous_count = vent_counts[key] if key in vent_counts.keys() else 0
@@ -136,6 +134,3 @@ def update_vent_counts(points: List[Point], vent_counts: dict[str, int]):
 
 if __name__ == "__main__":
     main()
-
-
-    

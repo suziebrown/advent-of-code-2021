@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Tuple
 
 PLAIN_TEXT_ENCODINGS = {
     "ABCEFG":   0,
@@ -17,13 +17,13 @@ PLAIN_TEXT_LETTERS = ["A", "B", "C", "D", "E", "F", "G"]
 NUMBER_OF_TEST_DIGITS = 4
 
 
-class Test_data:
+class TestData:
     def __init__(self, input_list: List[str]):
         self.coded_list = input_list
         self.decoded_digits = []
         self.sort_each_string()
 
-    def decode(self, code: dict[str, int]):
+    def decode(self, code: Dict[str, int]):
         self.decoded_digits = [code[string] for string in self.coded_list]
 
     def sort_each_string(self):
@@ -31,7 +31,7 @@ class Test_data:
             self.coded_list[index] = "".join(sorted(string))
         
 
-class Training_data:
+class TrainingData:
     def __init__(self, input_list: List[str]):
         self.coded_list = input_list
         self.cipher = {}
@@ -146,7 +146,7 @@ def main():
     print("Answer:", answer)
 
 
-def decode_displays(train: List[Training_data], test: List[Test_data]) -> List[List[int]]:
+def decode_displays(train: List[TrainingData], test: List[TestData]) -> List[List[int]]:
     decoded_displays = []
     for index in range(len(test)):
         train[index].decode()
@@ -164,7 +164,7 @@ def intlist_to_int(intlist: List[int]) -> int:
     return int("".join([str(digit) for digit in intlist]))
 
 
-def parse_input() -> (List[Training_data], List[Test_data]):
+def parse_input() -> Tuple[List[TrainingData], List[TestData]]:
     input_file = open("day08_input.txt", "r")
     input_lines = input_file.read().strip().split("\n")
     input_file.close()
@@ -176,9 +176,9 @@ def parse_input() -> (List[Training_data], List[Test_data]):
         train_list.append(split_line[0].split())
         test_list.append(split_line[1].split())
 
-    train = [Training_data(line) for line in train_list]
-    test = [Test_data(line) for line in test_list]
-    return (train, test)
+    train = [TrainingData(line) for line in train_list]
+    test = [TestData(line) for line in test_list]
+    return train, test
 
 
 if __name__ == "__main__":

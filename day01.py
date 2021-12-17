@@ -3,7 +3,7 @@ from typing import List
 
 def count_increases(depths: List[int]) -> int:
     input_length = len(depths)
-    deltas = [depths[i] - depths[i-1] for i in range(1,input_length)]
+    deltas = [depths[i] - depths[i-1] for i in range(1, input_length)]
     positive_deltas = [delta for delta in deltas if delta > 0]
     return len(positive_deltas)
 
@@ -15,6 +15,7 @@ def parse_input() -> List[int]:
     for line in input_file:
         depths.append(int(line))
 
+    input_file.close()
     return depths
 
 

@@ -1,15 +1,14 @@
 # I remembered after finishing day 4 that you can define classes & methods
 # that would have made this a lot more readable...
 
-from typing import List
-
+from typing import List, Tuple, Optional
 
 NUMBER_OF_BOARDS = 100
 ROWS_PER_BOARD = 5
 COLUMNS_PER_BOARD = 5
 
 
-def parse_input() -> List[str]:
+def parse_input() -> Tuple[List[str], List[List[List[str]]]]:
     
     input_file = open("day04_input.txt", "r")
     raw_input = input_file.read().split("\n\n")
@@ -20,7 +19,7 @@ def parse_input() -> List[str]:
     boards = [split_columns(board_rows) for board_rows in boards_rows]
         
     input_file.close()
-    return (numbers_drawn, boards)
+    return numbers_drawn, boards
 
 
 def split_rows(raw_board: str) -> List[str]:
@@ -79,13 +78,13 @@ def mark_boards(number: str, boards: List[List[List[str]]]):
                     board[row][column] = None
 
 
-def update_boards_bingo_status(boards: List[List[List[str]]], boards_bingo_status: list[int]):
+def update_boards_bingo_status(boards: List[List[List[str]]], boards_bingo_status: List[int]):
     for board_index in range(NUMBER_OF_BOARDS):
         if boards_bingo_status[board_index] == 0 and has_bingo(boards[board_index]):
             boards_bingo_status[board_index] = 1
 
 
-def get_winner_or_none(boards: list[list[list[str]]]) -> int:
+def get_winner_or_none(boards: List[List[List[str]]]) -> Optional[int]:
     for board_index, board in enumerate(boards):
         if has_bingo(board):
             return board_index
@@ -93,7 +92,7 @@ def get_winner_or_none(boards: list[list[list[str]]]) -> int:
     return None
 
 
-def get_loser_or_none(boards_bingo_status: List[int]) -> int:
+def get_loser_or_none(boards_bingo_status: List[int]) -> Optional[int]:
     number_of_bingos = sum(boards_bingo_status)
     
     if number_of_bingos == NUMBER_OF_BOARDS - 1:
@@ -139,12 +138,12 @@ def transpose(board: List[List[str]]) -> List[List[str]]:
 def main():
     (numbers_drawn, boards) = parse_input()
 
-    ## Part 1
+    # Part 1
     print("=== Part 1 ===")
     score = get_winner_score(numbers_drawn, boards)
     print("Answer:", score)
     
-    ## Part 2
+    # Part 2
     print("=== Part 2 ===")
     score = get_loser_score(numbers_drawn, boards)
     print("Answer:", score)

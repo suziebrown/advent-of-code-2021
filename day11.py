@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 
 GRID_WIDTH = 10
@@ -18,7 +18,8 @@ class Grid:
             self.simulate_one_step()
 
     def simulate_until_all_flash(self):
-        for iteration in range(1, 1000): # turns out the answer is <1000, so I didn't change to a while loop
+        # turns out the answer is <1000, so I didn't change this to a while loop
+        for iteration in range(1, 1000):
             self.simulate_one_step()
             flashes_this_step = sum([row.count(True) for row in self.has_flashed])
             if flashes_this_step == GRID_WIDTH * GRID_HEIGHT:
@@ -71,7 +72,7 @@ class Grid:
         return self.energy[y][x] >= FLASH_POINT and not self.has_flashed[y][x]
     
 
-def get_neighbours(x: int, y: int) -> List[tuple[int, int]]:
+def get_neighbours(x: int, y: int) -> List[Tuple[int, int]]:
     neighbours = [] 
     if x > 0:
         neighbours.append((x - 1, y))
@@ -93,7 +94,6 @@ def get_neighbours(x: int, y: int) -> List[tuple[int, int]]:
     
 
 def main():
-    has_flashed = [[False] * GRID_HEIGHT] * GRID_WIDTH
     energy = parse_input()
     
     # Part 1
@@ -104,7 +104,7 @@ def main():
     print("Answer:", answer)
 
     # Part 2
-    # Don't run straight after part 1, or the answer will be 100 too low!
+    # If run straight after part 1, the answer will be 100 too low!
     print("=== Part 2 ===")
     grid = Grid(energy)
     grid.simulate_until_all_flash()

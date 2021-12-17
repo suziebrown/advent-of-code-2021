@@ -98,7 +98,7 @@ def main():
     # Part 2
     print("=== Part 2 ===")
     basin_sizes = get_basin_sizes()
-    basin_sizes.sort(reverse = True)
+    basin_sizes.sort(reverse=True)
     answer = basin_sizes[0] * basin_sizes[1] * basin_sizes[2]
     print("Answer:", answer)
     
