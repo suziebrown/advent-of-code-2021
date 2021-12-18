@@ -11,6 +11,13 @@ LENGTH_TYPE_1_BITS = 11
 
 
 class Packet:
+    # PROPERTIES
+    # version | 3-bit number
+    # type | 3-bit number, either 100=literal or some other value indicating operator type
+    # start | position in full input string at which the packet starts
+    # end | position in full input string of the final digit of the packet
+    # [WIP] parent | the packet directly containing this one if applicable, else None
+    
     def __init__(self, input_string: str, start_position: int):
         self.version = input_string[start_position: start_position + VERSION_BITS]
         self.type = input_string[start_position + VERSION_BITS: start_position + VERSION_BITS + TYPE_BITS]
@@ -19,9 +26,11 @@ class Packet:
 
 
 class Literal(Packet):
+    # PROPERTIES
+    # value | the literal integer value encoded by the packet
+    
     def __init__(self, input_string: str, start_position: int):
         super().__init__(input_string, start_position)
-        self.value = None
         self.get_value_and_end(input_string)
 
     def get_value_and_end(self, input_string: str):
@@ -34,7 +43,7 @@ class Literal(Packet):
                 stop_reading = True
             value_bits += block[1:]
             block_start += LITERAL_BLOCK_LENGTH    
-        self.value = value_bits
+        self.value = int(value_bits, 2)
         self.get_end_position(block_start + 1)
 
     def get_end_position(self, content_end: int):
@@ -45,13 +54,16 @@ class Literal(Packet):
         
 
 class Operator(Packet):
+    # PROPERTIES
+    # length_type | 1 bit. 0 if subpacket_length = number of bits in subpackets. 1 if subpacket_length = number of direct subpackets.
+    # subpacket_length | as explained above
+    # subpacket_start_position | position in original input string where subpackets start
+    # [WIP] subpackets | list of Packets that are directly contained in this one
+
     def __init__(self, input_string: str, start_position: int):
         super().__init__(input_string, start_position)
         self.length_type = input_string[start_position + VERSION_BITS + TYPE_BITS]
-        self.subpacket_length = None
-        self.subpacket_start_position = None
         self.get_subpacket_length_and_start_position(input_string, start_position + VERSION_BITS + TYPE_BITS + INDICATOR_BITS)
-        self.subpackets = []
         self.get_subpackets()
 
     def get_subpacket_length_and_start_position(self, input_string: str, start: int):
@@ -77,10 +89,10 @@ def main():
     # parsing of literals is working :D
     print("Testing operator packet 38006F45291200")
     pkt = Operator(utils.hex_to_binary("38006F45291200"), 0)
-    print("version:", pkt.version, "type:", pkt.type, "subpackets length:", pkt.subpacket_length, "start:", pkt.start, "end:", pkt.end)
+    print("version:", pkt.version, "type:", pkt.type, "subpacket length:", pkt.subpacket_length, "start:", pkt.start, "end:", pkt.end)
     print("Testing operator packet EE00D40C823060")
     pkt = Operator(utils.hex_to_binary("EE00D40C823060"), 0)
-    print("version:", pkt.version, "type:", pkt.type, "subpackets length:", pkt.subpacket_length, "start:", pkt.start, "end:", pkt.end)
+    print("version:", pkt.version, "type:", pkt.type, "subpacket length:", pkt.subpacket_length, "start:", pkt.start, "end:", pkt.end)
     # parsing of operators is working so far as I've implemented it :)
     
     # Part 1
