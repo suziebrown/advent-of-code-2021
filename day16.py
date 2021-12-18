@@ -16,7 +16,7 @@ def main():
 
 
 def parse_input() -> List[str]:
-    input_file = open("day15_input.txt", "r")
+    input_file = open("day16_input.txt", "r")
     input_lines = input_file.read().strip().split("\n")
     input_file.close()
     return input_lines
