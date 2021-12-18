@@ -10,22 +10,22 @@ class Rule:
         self.to_right = to_add + from_pair[1]
 
 
-def fast_forward(number_of_steps: int):
+def fast_forward(number_of_steps: int, rules: Dict[str, Rule]):
     for _ in range(number_of_steps):
-        polymerise()
+        polymerise(rules)
 
 
-def polymerise():
-    # TODO: go through polymer (i.e. pair counts) & apply update to each consecutive pair
-    # Take a copy of the counts first so updates don't interfere with original counts
-    pass
+def polymerise(rules: Dict[str, Rule]):
+    pair_counts_before = pair_counts.copy()
+    for (pair, count) in pair_counts_before.items():
+        update_one_pair_n_times(count, rules[pair])
 
 
-def update_one_pair(rule: Rule):
-    pair_counts[rule.from_pair] -= 1
-    pair_counts[rule.to_left] += 1
-    pair_counts[rule.to_right] += 1
-    element_counts[rule.to_add] += 1
+def update_one_pair_n_times(n: int, rule: Rule):
+    pair_counts[rule.from_pair] -= n
+    pair_counts[rule.to_left] += n
+    pair_counts[rule.to_right] += n
+    element_counts[rule.to_add] += n
 
 
 def get_score():
@@ -42,13 +42,15 @@ def main():
     
     # Part 1
     print("=== Part 1 ===")
-    fast_forward(10)
+    fast_forward(10, rules)
     answer = get_score()
     print("Answer:", answer)
 
+    # If running immediately after Part 1, reduce number of steps to 30
     # Part 2
     print("=== Part 2 ===")
-    answer = "?"
+    fast_forward(40, rules)
+    answer = get_score()
     print("Answer:", answer)
 
 
