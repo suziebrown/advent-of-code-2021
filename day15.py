@@ -18,7 +18,7 @@
 #   This seems doable!
 
 
-from typing import List, Optional
+from typing import List, Tuple, Optional
 
 
 GRID_WIDTH = 100
@@ -34,6 +34,10 @@ class Point:
         self.layer = x + y
         self.risk = risk
         self.risk_distance = None
+
+    def get_up_and_left_neighbours(self): # -> Tuple[Optional[Point]]
+        pass
+        
 
     def calculate_risk_distance(self, point_left, point_up):
         # May want to calculate the neighbours rather than have them as parameters.
