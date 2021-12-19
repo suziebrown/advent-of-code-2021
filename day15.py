@@ -21,17 +21,21 @@
 from typing import List, Optional
 
 
+GRID_WIDTH = 100
+GRID_HEIGHT = 100
+
+
 class Point:
-    def __init__(self, x, y):
+    def __init__(self, x, y, risk):
         # y=row index, x=column index, hence the surprising [y][x] indexing
         # NB: x increases Right, y increases Down
         self.x = x
         self.y = y
         self.layer = x + y
-        self.risk = risk_grid[y][x]
+        self.risk = risk
         self.risk_distance = None
 
-    def calculate_risk_distance(self, point_left: Optional[Point], point_up: Optional[Point]):
+    def calculate_risk_distance(self, point_left, point_up):
         # May want to calculate the neighbours rather than have them as parameters.
         # In that case, write a wrapper get_risk_distance(self) that gets the neighbours
         # then calls this method with them.
@@ -45,16 +49,18 @@ class Point:
             self.risk_distance = self.risk + point_left.risk_distance
 
 
-def get_points_at_layer(layer_number: int) -> List[Point]:
-    # Probably more useful to return a dictionary so we can look up e.g. points["10,4"]
+def get_layer(layer_number: int) -> List[Point]:
+    global points
+    
     x_range = list(range(0, layer_number + 1))
     y_range = [layer_number - x for x in x_range]
-    points = [Point(x[i], y[i]) for i in range(layer_number + 1)]
-    return points
+    layer = [points[x_range[i]][y_range[i]] for i in range(layer_number + 1)]
+    return layer
 
             
 def main():
-    input_lines = parse_input()
+    global points
+    points = parse_input()
 
     # Test
     
@@ -73,9 +79,13 @@ def parse_input() -> List[str]:
     input_file = open("day15_input.txt", "r")
     input_lines = input_file.read().strip().split("\n")
     input_file.close()
-    # TODO: construct risk_grid from input
-    # I should make risk_grid an array of Points (i.e. List[List[Point]]) & avoid the need for dictionary
-    return input_lines
+
+    grid = [[None] * GRID_WIDTH for _ in range(GRID_HEIGHT)]
+    for row in range(GRID_HEIGHT):
+        for column in range(GRID_WIDTH):
+            grid[row][column] = Point(column, row, input_lines[row][column])
+        
+    return grid
 
 
 if __name__ == "__main__":
