@@ -23,6 +23,7 @@ from typing import List, Tuple, Optional
 
 GRID_WIDTH = 100
 GRID_HEIGHT = 100
+NUMBER_OF_LAYERS = GRID_HEIGHT + GRID_WIDTH - 2
 
 
 class Point:
@@ -32,33 +33,61 @@ class Point:
         self.x = x
         self.y = y
         self.layer = x + y
-        self.risk = risk
+        self.risk = int(risk)
         self.risk_distance = None
 
-    def get_up_and_left_neighbours(self): # -> Tuple[Optional[Point]]
-        pass
-        
+    def get_risk_distance(self):
+        if self.x == 0 and self.y == 0:
+            self.risk_distance = 0
+        else:
+            (left_neighbour, up_neighbour) = self.get_left_and_up_neighbours()
+            self.risk_distance = self.calculate_risk_distance(left_neighbour, up_neighbour)
 
-    def calculate_risk_distance(self, point_left, point_up):
-        # May want to calculate the neighbours rather than have them as parameters.
-        # In that case, write a wrapper get_risk_distance(self) that gets the neighbours
-        # then calls this method with them.
-        if point_left is None and point_up is None:
+    def get_left_and_up_neighbours(self):  # -> Tuple[Optional[Point], Optional[Point]]
+        if self.x == 0:
+            left_neighbour = None
+        else:
+            left_neighbour_x = self.x - 1
+            left_neighbour_y = self.y
+            left_neighbour = points[left_neighbour_y][left_neighbour_x]
+        if self.y == 0:
+            up_neighbour = None
+        else:
+            up_neighbour_x = self.x
+            up_neighbour_y = self.y - 1
+            up_neighbour = points[up_neighbour_y][up_neighbour_x]
+        return left_neighbour, up_neighbour
+
+    def calculate_risk_distance(self, left_neighbour, up_neighbour) -> int:
+        if left_neighbour is None and up_neighbour is None:
             raise Exception("Expected Left-neighbour and/or Up-neighbour, but got neither")
-        if point_left is not None and point_up is not None:
-            self.risk_distance = self.risk + min(point_left.risk_distance, point_up.risk_distance)
-        elif point_left is None:
-            self.risk_distance = self.risk + point_up.risk_distance
-        elif point_up is None:
-            self.risk_distance = self.risk + point_left.risk_distance
+        if left_neighbour is not None and up_neighbour is not None:
+            risk_distance = self.risk + min(left_neighbour.risk_distance, up_neighbour.risk_distance)
+        elif left_neighbour is None:
+            risk_distance = self.risk + up_neighbour.risk_distance
+        elif up_neighbour is None:
+            risk_distance = self.risk + left_neighbour.risk_distance
+        return risk_distance
+
+
+def calculate_risk_distances():
+    for layer_number in range(0, NUMBER_OF_LAYERS + 1):
+        points_in_layer = get_layer(layer_number)
+        for point in points_in_layer:
+            point.get_risk_distance()
 
 
 def get_layer(layer_number: int) -> List[Point]:
     global points
-    
-    x_range = list(range(0, layer_number + 1))
-    y_range = [layer_number - x for x in x_range]
-    layer = [points[x_range[i]][y_range[i]] for i in range(layer_number + 1)]
+
+    if layer_number <= GRID_WIDTH - 1:
+        x_range = list(range(0, layer_number + 1))
+        y_range = [layer_number - x for x in x_range]
+    else:
+        x_range = list(range(layer_number - GRID_WIDTH + 1, GRID_WIDTH))
+        y_range = [layer_number - x for x in x_range]
+
+    layer = [points[y_range[i]][x_range[i]] for i in range(len(x_range))]
     return layer
 
             
@@ -67,10 +96,11 @@ def main():
     points = parse_input()
 
     # Test
-    
+
     # Part 1
     print("=== Part 1 ===")
-    answer = "?"
+    calculate_risk_distances()
+    answer = points[GRID_HEIGHT - 1][GRID_WIDTH - 1].risk_distance
     print("Answer:", answer)
 
     # Part 2
@@ -79,7 +109,7 @@ def main():
     print("Answer:", answer)
 
 
-def parse_input() -> List[str]:
+def parse_input() -> List[List[Point]]:
     input_file = open("day15_input.txt", "r")
     input_lines = input_file.read().strip().split("\n")
     input_file.close()
