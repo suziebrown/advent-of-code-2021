@@ -1,5 +1,5 @@
+import math
 from typing import List
-
 
 HEX_BINARY_LOOKUP = {
     "0": "0000",

@@ -17,12 +17,11 @@
 #   of points per layer starts to decrease again, for a total of 100+98*99 = 9,802 calculations.
 #   This seems doable!
 
-
 from typing import List, Tuple, Optional
 
-
-GRID_WIDTH = 100
-GRID_HEIGHT = 100
+# These values should be 100 for Part 1, or 500 for Part 2 (I know, I shouldn't really hard-code them)
+GRID_WIDTH = 500
+GRID_HEIGHT = 500
 NUMBER_OF_LAYERS = GRID_HEIGHT + GRID_WIDTH - 2
 
 
@@ -95,22 +94,14 @@ def main():
     global points
     points = parse_input()
 
-    # Test
-
-    # Part 1
-    print("=== Part 1 ===")
+    # To switch between Part 1/2, change the input filename and the WIDTH/HEIGHT constants.
     calculate_risk_distances()
     answer = points[GRID_HEIGHT - 1][GRID_WIDTH - 1].risk_distance
     print("Answer:", answer)
 
-    # Part 2
-    print("=== Part 2 ===")
-    answer = "?"
-    print("Answer:", answer)
-
 
 def parse_input() -> List[List[Point]]:
-    input_file = open("day15_input.txt", "r")
+    input_file = open("day15_part2_input.txt", "r")
     input_lines = input_file.read().strip().split("\n")
     input_file.close()
 
